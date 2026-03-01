@@ -27,6 +27,5 @@ Situs ini dibangun dengan filosofi desain *Kinetic Minimalist*, menggunakan:
 
 ---
 
-👨‍💻 About the Author
-Naufal Dzaky S.
-© 2026 visupals.
+## 👨‍💻 About the Author
+Naufal Dzaky S © 2026 visupals.
