@@ -44,7 +44,14 @@
             <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
                 <div class="lg:col-span-5 relative lg:-ml-12">
                     <div class="aspect-[3/4] rounded-[2.5rem] bg-gray-100 dark:bg-zinc-900 border border-gray-200 dark:border-white/10 overflow-hidden shadow-2xl relative z-10">
-                        <img src="{{ asset('storage/profile.png') }}" 
+                        @php
+                            // Cek apakah foto profil ada di Cloudinary/URL luar atau di folder storage lokal
+                            $profileImg = asset('storage/profile.png');
+                            if (isset($user) && filter_var($user->profile_photo_path, FILTER_VALIDATE_URL)) {
+                                $profileImg = $user->profile_photo_path;
+                            }
+                        @endphp
+                        <img src="{{ $profileImg }}" 
                              alt="Naufal" 
                              class="w-full h-full object-cover transition-all duration-700 grayscale scale-100 hover:grayscale-0 hover:scale-105 cursor-crosshair">
                     </div>
@@ -128,9 +135,40 @@
                             <div x-show="activeWork === {{ $index }}" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-300 absolute top-0 w-full" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0 -translate-x-8" class="w-full">
                                 <a href="{{ route('portfolio.show', $item->slug) }}" class="group relative block rounded-[2.5rem] bg-white dark:bg-zinc-900 border border-gray-100 dark:border-white/10 transition-all hover:border-brand/30 hover:shadow-2xl overflow-hidden isolation-auto" style="isolation: isolate;">
                                     <div class="aspect-[3/2] relative overflow-hidden">
-                                        @php $thumb = $item->media->where('is_featured', true)->first() ?? $item->media->first(); @endphp
-                                        @if($thumb)
-                                            <img src="{{ asset('storage/' . $thumb->file_path) }}" alt="work" class="w-full h-full object-cover transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0">
+                                        @php 
+                                            $thumb = $item->media->where('is_featured', true)->first() ?? $item->media->first(); 
+                                            $thumbnailUrl = '';
+                                            $isVideo = false;
+
+                                            if ($thumb) {
+                                                $path = $thumb->file_path;
+                                                // Logika Hybrid: Deteksi URL YouTube
+                                                if (filter_var($path, FILTER_VALIDATE_URL)) {
+                                                    if (str_contains($path, 'youtube.com') || str_contains($path, 'youtu.be')) {
+                                                        preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $path, $match);
+                                                        $youtubeId = $match[1] ?? null;
+                                                        $thumbnailUrl = $youtubeId ? "https://img.youtube.com/vi/{$youtubeId}/maxresdefault.jpg" : '';
+                                                        $isVideo = true;
+                                                    } else {
+                                                        $thumbnailUrl = $path; // Langsung URL (Cloudinary)
+                                                    }
+                                                } else {
+                                                    $thumbnailUrl = asset('storage/' . $path); // File lokal
+                                                }
+                                            }
+                                        @endphp
+
+                                        @if($thumbnailUrl)
+                                            <img src="{{ $thumbnailUrl }}" alt="work" class="w-full h-full object-cover transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0">
+                                            
+                                            {{-- Play Button Icon untuk Video --}}
+                                            @if($isVideo)
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <div class="w-12 h-12 rounded-full bg-brand/90 flex items-center justify-center text-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         @endif
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
                                         <div class="absolute top-6 left-6">
@@ -212,9 +250,40 @@
                 <div class="group relative block rounded-[2.5rem] overflow-hidden bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 aspect-[4/5] shadow-xl transition-all duration-500 hover:border-brand/50 hover:-translate-y-2">
                     <a href="{{ route('portfolio.show', $item->slug) }}" class="block w-full h-full relative z-10">
                         <div class="w-full h-full relative overflow-hidden">
-                            @php $thumb = $item->media->where('is_featured', true)->first() ?? $item->media->first(); @endphp
-                            @if($thumb)
-                                <img src="{{ asset('storage/' . $thumb->file_path) }}" alt="{{ $item->title }}" class="object-cover w-full h-full transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0 brightness-95 group-hover:brightness-105">
+                            @php 
+                                $thumb = $item->media->where('is_featured', true)->first() ?? $item->media->first(); 
+                                $thumbnailUrl = '';
+                                $isVideo = false;
+
+                                if ($thumb) {
+                                    $path = $thumb->file_path;
+                                    // Logika Hybrid: Deteksi URL YouTube
+                                    if (filter_var($path, FILTER_VALIDATE_URL)) {
+                                        if (str_contains($path, 'youtube.com') || str_contains($path, 'youtu.be')) {
+                                            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $path, $match);
+                                            $youtubeId = $match[1] ?? null;
+                                            $thumbnailUrl = $youtubeId ? "https://img.youtube.com/vi/{$youtubeId}/maxresdefault.jpg" : '';
+                                            $isVideo = true;
+                                        } else {
+                                            $thumbnailUrl = $path; // Langsung URL (Cloudinary)
+                                        }
+                                    } else {
+                                        $thumbnailUrl = asset('storage/' . $path); // File lokal
+                                    }
+                                }
+                            @endphp
+
+                            @if($thumbnailUrl)
+                                <img src="{{ $thumbnailUrl }}" alt="{{ $item->title }}" class="object-cover w-full h-full transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0 brightness-95 group-hover:brightness-105">
+                                
+                                {{-- Play Button Icon untuk Video --}}
+                                @if($isVideo)
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="w-16 h-16 rounded-full bg-brand/90 flex items-center justify-center text-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                        </div>
+                                    </div>
+                                @endif
                             @endif
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-all duration-700"></div>
                         </div>
