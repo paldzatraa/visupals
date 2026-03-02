@@ -25,7 +25,7 @@
             </h1>
 
             <p class="text-gray-600 dark:text-gray-400 text-lg md:text-2xl max-w-2xl font-light leading-relaxed">
-                Kreator konten strategis di <span class="text-brand font-medium">UPMD FILKOM UB</span> yang memadukan intuisi kreatif dengan keahlian teknik Computer Engineering.
+                <span class="font-semibold">Videographer</span> & <span class="text-brand font-semibold">Photographer</span> yang memadukan intuisi kreatif dengan keahlian teknis.
             </p>
             
             <div class="pt-10 flex flex-col sm:flex-row gap-4 items-center justify-center">
@@ -51,7 +51,7 @@
                     <div class="absolute -bottom-8 -right-8 w-2/3 bg-brand rounded-3xl text-white p-8 shadow-xl z-20 hidden lg:block">
                         <h4 class="text-xs uppercase tracking-widest font-bold">Based in</h4>
                         <p class="text-5xl font-extrabold tracking-tighter mt-1">Malang</p>
-                        <p class="text-[10px] mt-4 uppercase tracking-[0.2em]">FILKOM UB Student</p>
+                        <p class="text-[10px] mt-4 uppercase tracking-[0.2em]">Freelancer</p>
                     </div>
                 </div>
                 
@@ -86,7 +86,7 @@
                 <div class="space-y-12 lg:sticky lg:top-36 text-center lg:text-left">
                     <div class="space-y-3 flex flex-col items-center lg:items-start">
                         <h2 class="text-5xl font-black tracking-tight text-gray-950 dark:text-white">Mastery<span class="text-brand">.</span></h2>
-                        <p class="text-gray-600 dark:text-gray-400 text-base max-w-md font-light">Software industri yang saya gunakan untuk riset audio, videografi sinematik, dan motion graphics.</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-base max-w-md font-light">Software industri yang saya gunakan untuk produksi audio, videografi sinematik, dan motion graphics.</p>
                     </div>
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-5">
                         @php
@@ -205,7 +205,7 @@
     <section id="portfolio" class="py-24 md:py-32 bg-gray-50 dark:bg-[#0a0a0a]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-20 space-y-4">
             <h2 class="text-5xl md:text-6xl font-black tracking-tight text-gray-950 dark:text-white">Selected Works<span class="text-brand">.</span></h2>
-            <p class="text-gray-500 dark:text-gray-400 font-light">Visi visual yang diwujudkan melalui presisi teknis Computer Engineering.</p>
+            <p class="text-gray-500 dark:text-gray-400 font-light">Visi visual yang diwujudkan melalui presisi teknis dan seni.</p>
         </div>
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
             @foreach($recentPortfolios as $item)
