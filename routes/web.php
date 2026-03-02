@@ -28,3 +28,15 @@ Route::get('/create-admin-secure', function () {
 
     return "Admin berhasil dibuat. Silakan login ke /admin";
 });
+
+// Tambahkan di routes/web.php untuk dijalankan 1x lagi
+Route::get('/fix-storage', function () {
+    // Hapus link lama jika ada
+    if (is_link(public_path('storage'))) {
+        unlink(public_path('storage'));
+    }
+    
+    // Buat link baru
+    Artisan::call('storage:link');
+    return "Storage link has been reset and recreated!";
+});
