@@ -9,7 +9,7 @@
 [phases.postbuild]
   cmds = [
     "rm -rf public/storage", 
-    "php artisan storage:link",
+    "ln -s ../storage/app/public public/storage",
     "php artisan config:cache",
     "php artisan route:cache",
     "php artisan view:cache"
