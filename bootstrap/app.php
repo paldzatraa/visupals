@@ -11,7 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        /**
+         * 1. Menangani Trust Proxies (WAJIB untuk Railway)
+         * Ini memberitahu Laravel untuk mempercayai load balancer Railway
+         * sehingga upload via HTTPS tidak dianggap sebagai serangan CSRF/Mixed Content.
+         */
+        $middleware->trustProxies(at: '*'); 
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -66,16 +66,27 @@ class PortfolioForm
                             ->live()
                             ->label('Tipe Media'),
                             
+                        /** * Masalah 1: Upload Gagal. 
+                         * Solusi: Tambahkan visibility('public') agar file bisa diakses oleh browser.
+                         */
                         FileUpload::make('file_path')
                             ->image()
                             ->imageEditor()
                             ->directory('portfolio-media')
+                            ->visibility('public') 
+                            ->preserveFilenames()
                             ->visible(fn (Get $get) => $get('type') === 'photo')
+                            ->required(fn (Get $get) => $get('type') === 'photo')
                             ->label('Pilih Foto'),
                             
-                        TextInput::make('video_url')
+                        /** * Masalah 2: Thumbnail Video Tidak Muncul.
+                         * Solusi: Gunakan nama kolom yang sama (file_path) agar dibaca oleh home.blade.php.
+                         */
+                        TextInput::make('file_path')
                             ->url()
+                            ->placeholder('https://www.youtube.com/watch?v=...')
                             ->visible(fn (Get $get) => $get('type') === 'video')
+                            ->required(fn (Get $get) => $get('type') === 'video')
                             ->label('Tautan Video'),
                             
                         Toggle::make('is_featured')
