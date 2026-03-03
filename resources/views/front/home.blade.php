@@ -45,7 +45,6 @@
                 <div class="lg:col-span-5 relative lg:-ml-12">
                     <div class="aspect-[3/4] rounded-[2.5rem] bg-gray-100 dark:bg-zinc-900 border border-gray-200 dark:border-white/10 overflow-hidden shadow-2xl relative z-10">
                         @php
-                            // Cek apakah foto profil ada di Cloudinary/URL luar atau di folder storage lokal
                             $profileImg = asset('storage/profile.png');
                             if (isset($user) && filter_var($user->profile_photo_path, FILTER_VALIDATE_URL)) {
                                 $profileImg = $user->profile_photo_path;
@@ -244,7 +243,7 @@
         </div>
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
             @foreach($recentPortfolios as $item)
-                <div class="group relative block rounded-[2.5rem] overflow-hidden bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 aspect-[4/5] shadow-xl transition-all duration-500 hover:border-brand/50 hover:-translate-y-2">
+                <div class="group relative block rounded-[2.5rem] overflow-hidden bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 aspect-[4/5] shadow-xl transition-all duration-500 hover:border-brand/50 hover:-translate-y-2 isolate">
                     
                     <div class="w-full h-full relative overflow-hidden">
                         @php 
