@@ -31,30 +31,32 @@ Route::get('/create-admin-secure', function () {
     return "Admin berhasil dibuat. Silakan login ke /admin";
 });
 
-Route::get('/rebuild-bridge-final', function () {
-    $publicPath = public_path('storage');
+Route::get('/nuke-and-link', function () {
+    try {
+        $publicStorage = public_path('storage');
+        $actualStorage = storage_path('app/public');
 
-    // 1. Amputasi folder fisik storage
-    if (file_exists($publicPath)) {
-        // Jika folder, gunakan perintah sistem untuk menghapus rekursif
-        system('rm -rf ' . escapeshellarg($publicPath));
+        // 1. Hapus folder fisik secara total
+        if (file_exists($publicStorage)) {
+            system('rm -rf ' . escapeshellarg($publicStorage));
+        }
+
+        // 2. Buat symlink manual menggunakan perintah Linux
+        // Format: ln -s [target_asli] [nama_link]
+        system("ln -s $actualStorage $publicStorage");
+
+        // 3. Verifikasi hasil
+        clearstatcache(); // Bersihkan cache PHP agar is_link() akurat
+        
+        return response()->json([
+            'status' => is_link($publicStorage) ? 'BERHASIL' : 'GAGAL',
+            'is_link' => is_link($publicStorage),
+            'link_points_to' => is_link($publicStorage) ? readlink($publicStorage) : 'N/A',
+            'message' => 'Jika status BERHASIL, foto harusnya muncul sekarang.'
+        ]);
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
     }
-
-    // 2. Bangun ulang jembatan symlink
-    Artisan::call('storage:link');
-
-    // 3. Cek apakah sekarang sudah jadi link
-    $isLinkNow = is_link($publicPath);
-
-    // Memberikan izin baca-tulis secara rekursif pada folder storage
-    system('chmod -R 755 ' . escapeshellarg(storage_path('app/public')));
-    system('chmod -R 755 ' . escapeshellarg(public_path('storage')));
-
-    return response()->json([
-        'status' => $isLinkNow ? 'Success' : 'Failed',
-        'message' => $isLinkNow ? 'Jembatan sudah terpasang!' : 'Gagal membangun jembatan.',
-        'is_link' => $isLinkNow
-    ]);
 });
 
 Route::get('/debug-storage', function () {
