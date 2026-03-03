@@ -40,3 +40,14 @@ Route::get('/fix-storage', function () {
     Artisan::call('storage:link');
     return "Storage link has been reset and recreated!";
 });
+
+Route::get('/debug-storage', function () {
+    $results = [
+        'public_storage_exists' => file_exists(public_path('storage')),
+        'is_link' => is_link(public_path('storage')),
+        'storage_path_writable' => is_writable(storage_path('app/public')),
+        'contents_of_public' => scandir(public_path()),
+        'contents_of_storage' => file_exists(storage_path('app/public')) ? scandir(storage_path('app/public')) : 'folder not found',
+    ];
+    return response()->json($results);
+});
