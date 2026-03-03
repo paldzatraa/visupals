@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Users\Schemas;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
+use Illuminate\Support\Facades\Hash;
 
 class UserForm
 {
@@ -22,6 +23,13 @@ class UserForm
                     ->required()
                     ->maxLength(255)
                     ->label('Alamat Email'),
+
+                TextInput::make('password')
+                    ->password()
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn (string $operation): bool => $operation === 'create')
+                    ->label('Password'),
 
                 FileUpload::make('profile_photo')
                     ->image()
