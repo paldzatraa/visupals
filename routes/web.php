@@ -90,3 +90,23 @@ Route::get('/trace-storage-secure', function () {
         ], 500);
     }
 });
+
+Route::get('/gate-storage', function () {
+    return '
+        <form action="/gate-storage" method="POST" enctype="multipart/form-data" style="padding:20px; font-family:sans-serif;">
+            ' . csrf_field() . '
+            <h2>Upload Profile Photo ke Railway Volume</h2>
+            <input type="file" name="profile_photo" required>
+            <button type="submit" style="padding:10px 20px; cursor:pointer;">Upload & Ganti Foto</button>
+        </form>
+    ';
+});
+
+Route::post('/gate-storage', function (Request $request) {
+    if ($request->hasFile('profile_photo')) {
+        // Simpan langsung dengan nama profile.png di disk public
+        $request->file('profile_photo')->storeAs('', 'profile.png', 'public');
+        return "Berhasil! Foto telah tersimpan di storage/app/public/profile.png";
+    }
+    return "Gagal mengunggah file.";
+});

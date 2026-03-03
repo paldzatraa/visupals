@@ -44,14 +44,7 @@
             <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
                 <div class="lg:col-span-5 relative lg:-ml-12">
                     <div class="aspect-[3/4] rounded-[2.5rem] bg-gray-100 dark:bg-zinc-900 border border-gray-200 dark:border-white/10 overflow-hidden shadow-2xl relative z-10">
-                        @php
-                            // Ambil user pertama (kamu)
-                            $me = \App\Models\User::first();
-                            $profileImg = ($me && $me->profile_photo) 
-                                ? asset('storage/' . $me->profile_photo) 
-                                : asset('storage/profile.png'); // Fallback ke file default
-                        @endphp
-                        <img src="{{ $profileImg }}" 
+                        <img src="{{ asset('storage/profile.png') }}" 
                              alt="Naufal" 
                              class="w-full h-full object-cover transition-all duration-700 grayscale scale-100 hover:grayscale-0 hover:scale-105 cursor-crosshair">
                     </div>
