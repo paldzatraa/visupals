@@ -71,7 +71,7 @@
                             
                             <div class="flex gap-4 pt-6">
                                 <a href="https://instagram.com/nfldss" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-2xl border border-gray-300 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:text-brand dark:hover:text-brand hover:border-brand dark:hover:border-brand hover:scale-110 transition-all duration-300" title="Instagram">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44c-.795 0-1.44-.645-1.44-1.44s.645-1.44 1.44-1.44z"/></svg>
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44c-.795 0-1.44-.645-1.44-1.44s.645-1.44 1.44-1.44z"/></svg>
                                 </a>
                                 <a href="https://tiktok.com/@palpicts" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-2xl border border-gray-300 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:text-brand dark:hover:text-brand hover:border-brand dark:hover:border-brand hover:scale-110 transition-all duration-300" title="TikTok">
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 448 512"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg>
@@ -138,27 +138,35 @@
                                         @php 
                                             $thumb = $item->media->where('is_featured', true)->first() ?? $item->media->first();
                                             $thumbnailUrl = '';
+                                            $isVideo = false;
 
                                             if ($thumb) {
-                                                if ($thumb->type === 'video' && $thumb->video_url) {
-                                                    // Logika YouTube Thumbnail
-                                                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $thumb->video_url, $match);
+                                                $path = $thumb->file_path ?? $thumb->video_url; // Cek kedua kolom untuk backward compatibility
+                                                if (filter_var($path, FILTER_VALIDATE_URL) && (str_contains($path, 'youtube.com') || str_contains($path, 'youtu.be'))) {
+                                                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $path, $match);
                                                     $youtubeId = $match[1] ?? null;
-                                                    $thumbnailUrl = $youtubeId ? "https://img.youtube.com/vi/{$youtubeId}/maxresdefault.jpg" : '';
-                                            } elseif ($thumb->type === 'photo' && $thumb->file_path) {
-                                                // Logika Foto
-                                                $thumbnailUrl = asset('storage/' . $thumb->file_path);
-                                            }
-                                        }   
-                                    @endphp
+                                                    $thumbnailUrl = $youtubeId ? "https://img.youtube.com/vi/{$youtubeId}/hqdefault.jpg" : '';
+                                                    $isVideo = true;
+                                                } elseif ($thumb->type === 'photo' && $thumb->file_path) {
+                                                    $thumbnailUrl = asset('storage/' . $thumb->file_path);
+                                                }
+                                            }   
+                                        @endphp
 
-                                    @if($thumbnailUrl)
-                                        <img src="{{ $thumbnailUrl }}" ...>
-                                    @else
-                                        <div class="w-full h-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center">
-                                            <span class="text-[10px] text-gray-400">NO MEDIA DATA</span>
-                                        </div>
-                                    @endif
+                                        @if($thumbnailUrl)
+                                            <img src="{{ $thumbnailUrl }}" alt="{{ $item->title }}" class="w-full h-full object-cover transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0">
+                                            @if($isVideo)
+                                                <div class="absolute inset-0 flex items-center justify-center">
+                                                    <div class="w-12 h-12 rounded-full bg-brand/90 flex items-center justify-center text-white shadow-lg">
+                                                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @else
+                                            <div class="w-full h-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center">
+                                                <span class="text-[10px] text-gray-400">NO MEDIA DATA</span>
+                                            </div>
+                                        @endif
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
                                         <div class="absolute top-6 left-6">
                                             <span class="px-3 py-1 bg-white/20 backdrop-blur-sm border border-white/30 text-white text-[9px] font-bold uppercase tracking-widest rounded-full">{{ $item->category->name }}</span>
@@ -236,63 +244,61 @@
         </div>
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
             @foreach($recentPortfolios as $item)
-    <div class="group relative block rounded-[2.5rem] overflow-hidden bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 aspect-[4/5] shadow-xl transition-all duration-500 hover:border-brand/50 hover:-translate-y-2">
-        
-        <div class="w-full h-full relative overflow-hidden">
-            @php 
-                $thumb = $item->media->where('is_featured', true)->first() ?? $item->media->first(); 
-                $thumbnailUrl = '';
-                $embedUrl = '';
-                $isVideo = false;
-
-                if ($thumb) {
-                    $path = $thumb->file_path;
+                <div class="group relative block rounded-[2.5rem] overflow-hidden bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 aspect-[4/5] shadow-xl transition-all duration-500 hover:border-brand/50 hover:-translate-y-2">
                     
-                    // Deteksi jika path adalah URL YouTube
-                    if (filter_var($path, FILTER_VALIDATE_URL) && (str_contains($path, 'youtube.com') || str_contains($path, 'youtu.be'))) {
-                        preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $path, $match);
-                        $youtubeId = $match[1] ?? null;
-                        if ($youtubeId) {
-                            // Menghasilkan link embed resmi YouTube
-                            $embedUrl = "https://www.youtube.com/embed/{$youtubeId}?rel=0&showinfo=0&autoplay=0";
-                            $isVideo = true;
-                        }
-                    } else {
-                        // Jika bukan video, anggap sebagai gambar (lokal atau Cloudinary)
-                        $thumbnailUrl = str_contains($path, 'http') ? $path : asset('storage/' . $path);
-                    }
-                }
-            @endphp
+                    <div class="w-full h-full relative overflow-hidden">
+                        @php 
+                            $thumb = $item->media->where('is_featured', true)->first() ?? $item->media->first(); 
+                            $thumbnailUrl = '';
+                            $embedUrl = '';
+                            $isVideo = false;
 
-            @if($isVideo)
-                {{-- Tampilkan Player Video Langsung --}}
-                <div class="w-full h-full bg-black">
-                    <iframe 
-                        src="{{ $embedUrl }}" 
-                        class="w-full h-full" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
+                            if ($thumb) {
+                                $path = $thumb->file_path ?? $thumb->video_url; // Cek kedua kolom
+                                
+                                if (filter_var($path, FILTER_VALIDATE_URL) && (str_contains($path, 'youtube.com') || str_contains($path, 'youtu.be'))) {
+                                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $path, $match);
+                                    $youtubeId = $match[1] ?? null;
+                                    if ($youtubeId) {
+                                        $thumbnailUrl = "https://img.youtube.com/vi/{$youtubeId}/hqdefault.jpg";
+                                        $embedUrl = "https://www.youtube.com/embed/{$youtubeId}?rel=0&showinfo=0&autoplay=0";
+                                        $isVideo = true;
+                                    }
+                                } else {
+                                    $thumbnailUrl = str_contains($path, 'http') ? $path : asset('storage/' . $path);
+                                }
+                            }
+                        @endphp
+
+                        @if($isVideo)
+                            {{-- Pattern: Tampilkan Thumbnail dengan Ikon Play, Klik untuk buka Video/Detail --}}
+                            <a href="{{ route('portfolio.show', $item->slug) }}" class="block w-full h-full relative">
+                                <img src="{{ $thumbnailUrl }}" alt="{{ $item->title }}" class="object-cover w-full h-full transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0 brightness-95 group-hover:brightness-105">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="w-16 h-16 rounded-full bg-brand/90 flex items-center justify-center text-white shadow-2xl">
+                                        <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                    </div>
+                                </div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-all duration-700"></div>
+                            </a>
+                        @else
+                            {{-- Tampilkan Gambar Foto --}}
+                            <a href="{{ route('portfolio.show', $item->slug) }}" class="block w-full h-full">
+                                @if($thumbnailUrl)
+                                    <img src="{{ $thumbnailUrl }}" alt="{{ $item->title }}" class="object-cover w-full h-full transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0 brightness-95 group-hover:brightness-105">
+                                @endif
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-all duration-700"></div>
+                            </a>
+                        @endif
+                    </div>
+
+                    {{-- Info Judul di Bagian Bawah --}}
+                    <div class="absolute inset-x-5 bottom-5 p-7 bg-black/40 backdrop-blur-md rounded-[2.5rem] border border-white/5 transform translate-y-3 group-hover:translate-y-0 transition-all duration-700 ease-out flex flex-col items-center text-center pointer-events-none">
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-white leading-tight tracking-tighter mb-2">{{ $item->title }}</h3>
+                        <span class="px-3 py-1 rounded-full bg-brand text-black text-[8px] font-bold uppercase tracking-widest shadow-lg">{{ $item->category->name ?? 'Work' }}</span>
+                    </div>
                 </div>
-            @else
-                {{-- Tampilkan Gambar --}}
-                <a href="{{ route('portfolio.show', $item->slug) }}" class="block w-full h-full">
-                    @if($thumbnailUrl)
-                        <img src="{{ $thumbnailUrl }}" alt="{{ $item->title }}" class="object-cover w-full h-full transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0 brightness-95 group-hover:brightness-105">
-                    @endif
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-all duration-700"></div>
-                </a>
-            @endif
-        </div>
-
-        {{-- Info Judul di Bagian Bawah --}}
-        <div class="absolute inset-x-5 bottom-5 p-7 bg-black/40 backdrop-blur-md rounded-[2.5rem] border border-white/5 transform translate-y-3 group-hover:translate-y-0 transition-all duration-700 ease-out flex flex-col items-center text-center pointer-events-none">
-            <h3 class="text-2xl md:text-3xl font-extrabold text-white leading-tight tracking-tighter mb-2">{{ $item->title }}</h3>
-            <span class="px-3 py-1 rounded-full bg-brand text-black text-[8px] font-bold uppercase tracking-widest shadow-lg">{{ $item->category->name ?? 'Work' }}</span>
-        </div>
-    </div>
-@endforeach
+            @endforeach
         </div>
     </section>
 
