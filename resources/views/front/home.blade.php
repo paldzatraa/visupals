@@ -247,53 +247,63 @@
         </div>
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
             @foreach($recentPortfolios as $item)
-                <div class="group relative block rounded-[2.5rem] overflow-hidden bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 aspect-[4/5] shadow-xl transition-all duration-500 hover:border-brand/50 hover:-translate-y-2">
-                    <a href="{{ route('portfolio.show', $item->slug) }}" class="block w-full h-full relative z-10">
-                        <div class="w-full h-full relative overflow-hidden">
-                            @php 
-                                $thumb = $item->media->where('is_featured', true)->first() ?? $item->media->first(); 
-                                $thumbnailUrl = '';
-                                $isVideo = false;
+    <div class="group relative block rounded-[2.5rem] overflow-hidden bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 aspect-[4/5] shadow-xl transition-all duration-500 hover:border-brand/50 hover:-translate-y-2">
+        
+        <div class="w-full h-full relative overflow-hidden">
+            @php 
+                $thumb = $item->media->where('is_featured', true)->first() ?? $item->media->first(); 
+                $thumbnailUrl = '';
+                $embedUrl = '';
+                $isVideo = false;
 
-                                if ($thumb) {
-                                    $path = $thumb->file_path;
-                                    // Logika Hybrid: Deteksi URL YouTube
-                                    if (filter_var($path, FILTER_VALIDATE_URL)) {
-                                        if (str_contains($path, 'youtube.com') || str_contains($path, 'youtu.be')) {
-                                            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $path, $match);
-                                            $youtubeId = $match[1] ?? null;
-                                            $thumbnailUrl = $youtubeId ? "https://img.youtube.com/vi/{$youtubeId}/maxresdefault.jpg" : '';
-                                            $isVideo = true;
-                                        } else {
-                                            $thumbnailUrl = $path; // Langsung URL (Cloudinary)
-                                        }
-                                    } else {
-                                        $thumbnailUrl = asset('storage/' . $path); // File lokal
-                                    }
-                                }
-                            @endphp
+                if ($thumb) {
+                    $path = $thumb->file_path;
+                    
+                    // Deteksi jika path adalah URL YouTube
+                    if (filter_var($path, FILTER_VALIDATE_URL) && (str_contains($path, 'youtube.com') || str_contains($path, 'youtu.be'))) {
+                        preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $path, $match);
+                        $youtubeId = $match[1] ?? null;
+                        if ($youtubeId) {
+                            // Menghasilkan link embed resmi YouTube
+                            $embedUrl = "https://www.youtube.com/embed/{$youtubeId}?rel=0&showinfo=0&autoplay=0";
+                            $isVideo = true;
+                        }
+                    } else {
+                        // Jika bukan video, anggap sebagai gambar (lokal atau Cloudinary)
+                        $thumbnailUrl = str_contains($path, 'http') ? $path : asset('storage/' . $path);
+                    }
+                }
+            @endphp
 
-                            @if($thumbnailUrl)
-                                <img src="{{ $thumbnailUrl }}" alt="{{ $item->title }}" class="object-cover w-full h-full transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0 brightness-95 group-hover:brightness-105">
-                                
-                                {{-- Play Button Icon untuk Video --}}
-                                @if($isVideo)
-                                    <div class="absolute inset-0 flex items-center justify-center">
-                                        <div class="w-16 h-16 rounded-full bg-brand/90 flex items-center justify-center text-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endif
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-all duration-700"></div>
-                        </div>
-                        <div class="absolute inset-x-5 bottom-5 p-7 bg-black/40 backdrop-blur-md rounded-[2.5rem] border border-white/5 transform translate-y-3 group-hover:translate-y-0 transition-all duration-700 ease-out flex flex-col items-center text-center">
-                            <h3 class="text-2xl md:text-3xl font-extrabold text-white leading-tight tracking-tighter mb-2">{{ $item->title }}</h3>
-                            <span class="px-3 py-1 rounded-full bg-brand text-black text-[8px] font-bold uppercase tracking-widest shadow-lg">{{ $item->category->name ?? 'Work' }}</span>
-                        </div>
-                    </a>
+            @if($isVideo)
+                {{-- Tampilkan Player Video Langsung --}}
+                <div class="w-full h-full bg-black">
+                    <iframe 
+                        src="{{ $embedUrl }}" 
+                        class="w-full h-full" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
                 </div>
-            @endforeach
+            @else
+                {{-- Tampilkan Gambar --}}
+                <a href="{{ route('portfolio.show', $item->slug) }}" class="block w-full h-full">
+                    @if($thumbnailUrl)
+                        <img src="{{ $thumbnailUrl }}" alt="{{ $item->title }}" class="object-cover w-full h-full transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0 brightness-95 group-hover:brightness-105">
+                    @endif
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-all duration-700"></div>
+                </a>
+            @endif
+        </div>
+
+        {{-- Info Judul di Bagian Bawah --}}
+        <div class="absolute inset-x-5 bottom-5 p-7 bg-black/40 backdrop-blur-md rounded-[2.5rem] border border-white/5 transform translate-y-3 group-hover:translate-y-0 transition-all duration-700 ease-out flex flex-col items-center text-center pointer-events-none">
+            <h3 class="text-2xl md:text-3xl font-extrabold text-white leading-tight tracking-tighter mb-2">{{ $item->title }}</h3>
+            <span class="px-3 py-1 rounded-full bg-brand text-black text-[8px] font-bold uppercase tracking-widest shadow-lg">{{ $item->category->name ?? 'Work' }}</span>
+        </div>
+    </div>
+@endforeach
         </div>
     </section>
 
