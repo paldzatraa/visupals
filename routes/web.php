@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -93,20 +95,36 @@ Route::get('/trace-storage-secure', function () {
 
 Route::get('/gate-storage', function () {
     return '
-        <form action="/gate-storage" method="POST" enctype="multipart/form-data" style="padding:20px; font-family:sans-serif;">
+        <form action="/gate-storage" method="POST" enctype="multipart/form-data" style="padding:40px; font-family:sans-serif; max-width:500px; margin:auto; border:1px solid #ddd; border-radius:20px; margin-top:50px;">
             ' . csrf_field() . '
-            <h2>Upload Profile Photo ke Railway Volume</h2>
-            <input type="file" name="profile_photo" required>
-            <button type="submit" style="padding:10px 20px; cursor:pointer;">Upload & Ganti Foto</button>
+            <h2 style="color:#f97316;">Railway Volume Gateway</h2>
+            <p style="font-size:12px; color:#666;">Unggah foto untuk mengganti <b>storage/app/public/profile.png</b></p>
+            <input type="file" name="profile_photo" required style="margin:20px 0; display:block;">
+            <button type="submit" style="padding:12px 24px; background:#f97316; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">Upload Sekarang</button>
         </form>
     ';
 });
 
 Route::post('/gate-storage', function (Request $request) {
-    if ($request->hasFile('profile_photo')) {
-        // Simpan langsung dengan nama profile.png di disk public
-        $request->file('profile_photo')->storeAs('', 'profile.png', 'public');
-        return "Berhasil! Foto telah tersimpan di storage/app/public/profile.png";
+    try {
+        if (!$request->hasFile('profile_photo')) {
+            return "❌ Tidak ada file yang dipilih.";
+        }
+
+        $file = $request->file('profile_photo');
+        
+        // Pastikan folder 'public' di dalam storage ada
+        if (!Storage::disk('public')->exists('')) {
+            Storage::disk('public')->makeDirectory('');
+        }
+
+        // Simpan file
+        $path = $file->storeAs('', 'profile.png', 'public');
+
+        return "✅ <b>Berhasil!</b><br>File disimpan di: storage/app/public/" . $path . "<br><br><a href='/'>Kembali ke Beranda</a>";
+        
+    } catch (\Exception $e) {
+        // Jika Error 500, pesan aslinya akan muncul di sini
+        return "❌ <b>Gagal!</b><br>Pesan Error: " . $e->getMessage();
     }
-    return "Gagal mengunggah file.";
 });
