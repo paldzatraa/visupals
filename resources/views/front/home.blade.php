@@ -45,10 +45,11 @@
                 <div class="lg:col-span-5 relative lg:-ml-12">
                     <div class="aspect-[3/4] rounded-[2.5rem] bg-gray-100 dark:bg-zinc-900 border border-gray-200 dark:border-white/10 overflow-hidden shadow-2xl relative z-10">
                         @php
-                            $profileImg = asset('storage/profile.png');
-                            if (isset($user) && filter_var($user->profile_photo_path, FILTER_VALIDATE_URL)) {
-                                $profileImg = $user->profile_photo_path;
-                            }
+                            // Ambil user pertama (kamu)
+                            $me = \App\Models\User::first();
+                            $profileImg = ($me && $me->profile_photo) 
+                                ? asset('storage/' . $me->profile_photo) 
+                                : asset('storage/profile.png'); // Fallback ke file default
                         @endphp
                         <img src="{{ $profileImg }}" 
                              alt="Naufal" 
@@ -243,7 +244,7 @@
         </div>
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12">
             @foreach($recentPortfolios as $item)
-                <div class="group relative block rounded-[2.5rem] overflow-hidden bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 aspect-[4/5] shadow-xl transition-all duration-500 hover:border-brand/50 hover:-translate-y-2 isolate">
+                <div class="group relative block rounded-[2.5rem] overflow-hidden bg-white dark:bg-zinc-900 border border-gray-200 dark:border-white/10 aspect-[4/5] shadow-xl transition-all duration-500 hover:border-brand/50 hover:-translate-y-2 overflow-hidden isolate">
                     
                     <div class="w-full h-full relative overflow-hidden">
                         @php 
@@ -272,7 +273,7 @@
                         @if($isVideo)
                             {{-- Pattern: Tampilkan Thumbnail dengan Ikon Play, Klik untuk buka Video/Detail --}}
                             <a href="{{ route('portfolio.show', $item->slug) }}" class="block w-full h-full relative">
-                                <img src="{{ $thumbnailUrl }}" alt="{{ $item->title }}" class="object-cover w-full h-full transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0 brightness-95 group-hover:brightness-105">
+                                <img src="{{ $thumbnailUrl }}" alt="{{ $item->title }}" class="object-cover w-full h-full transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0 brightness-95 group-hover:brightness-105 transform-gpu">
                                 <div class="absolute inset-0 flex items-center justify-center">
                                     <div class="w-16 h-16 rounded-full bg-brand/90 flex items-center justify-center text-white shadow-2xl">
                                         <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
