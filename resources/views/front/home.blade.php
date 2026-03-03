@@ -136,40 +136,29 @@
                                 <a href="{{ route('portfolio.show', $item->slug) }}" class="group relative block rounded-[2.5rem] bg-white dark:bg-zinc-900 border border-gray-100 dark:border-white/10 transition-all hover:border-brand/30 hover:shadow-2xl overflow-hidden isolation-auto" style="isolation: isolate;">
                                     <div class="aspect-[3/2] relative overflow-hidden">
                                         @php 
-                                            $thumb = $item->media->where('is_featured', true)->first() ?? $item->media->first(); 
+                                            $thumb = $item->media->where('is_featured', true)->first() ?? $item->media->first();
                                             $thumbnailUrl = '';
-                                            $isVideo = false;
 
                                             if ($thumb) {
-                                                $path = $thumb->file_path;
-                                                // Logika Hybrid: Deteksi URL YouTube
-                                                if (filter_var($path, FILTER_VALIDATE_URL)) {
-                                                    if (str_contains($path, 'youtube.com') || str_contains($path, 'youtu.be')) {
-                                                        preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $path, $match);
-                                                        $youtubeId = $match[1] ?? null;
-                                                        $thumbnailUrl = $youtubeId ? "https://img.youtube.com/vi/{$youtubeId}/maxresdefault.jpg" : '';
-                                                        $isVideo = true;
-                                                    } else {
-                                                        $thumbnailUrl = $path; // Langsung URL (Cloudinary)
-                                                    }
-                                                } else {
-                                                    $thumbnailUrl = asset('storage/' . $path); // File lokal
-                                                }
+                                                if ($thumb->type === 'video' && $thumb->video_url) {
+                                                    // Logika YouTube Thumbnail
+                                                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $thumb->video_url, $match);
+                                                    $youtubeId = $match[1] ?? null;
+                                                    $thumbnailUrl = $youtubeId ? "https://img.youtube.com/vi/{$youtubeId}/maxresdefault.jpg" : '';
+                                            } elseif ($thumb->type === 'photo' && $thumb->file_path) {
+                                                // Logika Foto
+                                                $thumbnailUrl = asset('storage/' . $thumb->file_path);
                                             }
-                                        @endphp
+                                        }   
+                                    @endphp
 
-                                        @if($thumbnailUrl)
-                                            <img src="{{ $thumbnailUrl }}" alt="work" class="w-full h-full object-cover transition duration-[1.5s] group-hover:scale-110 grayscale group-hover:grayscale-0">
-                                            
-                                            {{-- Play Button Icon untuk Video --}}
-                                            @if($isVideo)
-                                                <div class="absolute inset-0 flex items-center justify-center">
-                                                    <div class="w-12 h-12 rounded-full bg-brand/90 flex items-center justify-center text-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                        @endif
+                                    @if($thumbnailUrl)
+                                        <img src="{{ $thumbnailUrl }}" ...>
+                                    @else
+                                        <div class="w-full h-full bg-gray-200 dark:bg-zinc-800 flex items-center justify-center">
+                                            <span class="text-[10px] text-gray-400">NO MEDIA DATA</span>
+                                        </div>
+                                    @endif
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
                                         <div class="absolute top-6 left-6">
                                             <span class="px-3 py-1 bg-white/20 backdrop-blur-sm border border-white/30 text-white text-[9px] font-bold uppercase tracking-widest rounded-full">{{ $item->category->name }}</span>

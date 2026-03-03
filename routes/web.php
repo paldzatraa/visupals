@@ -31,32 +31,19 @@ Route::get('/create-admin-secure', function () {
     return "Admin berhasil dibuat. Silakan login ke /admin";
 });
 
-Route::get('/nuke-and-link', function () {
-    try {
-        $publicStorage = public_path('storage');
-        $actualStorage = storage_path('app/public');
-
-        // 1. Hapus folder fisik secara total
-        if (file_exists($publicStorage)) {
-            system('rm -rf ' . escapeshellarg($publicStorage));
-        }
-
-        // 2. Buat symlink manual menggunakan perintah Linux
-        // Format: ln -s [target_asli] [nama_link]
-        system("ln -s $actualStorage $publicStorage");
-
-        // 3. Verifikasi hasil
-        clearstatcache(); // Bersihkan cache PHP agar is_link() akurat
-        
-        return response()->json([
-            'status' => is_link($publicStorage) ? 'BERHASIL' : 'GAGAL',
-            'is_link' => is_link($publicStorage),
-            'link_points_to' => is_link($publicStorage) ? readlink($publicStorage) : 'N/A',
-            'message' => 'Jika status BERHASIL, foto harusnya muncul sekarang.'
-        ]);
-    } catch (\Exception $e) {
-        return "Error: " . $e->getMessage();
+Route::get('/fix-link-relative', function () {
+    $publicStorage = public_path('storage');
+    // Hapus link lama
+    if (file_exists($publicStorage) || is_link($publicStorage)) {
+        system('rm -rf ' . escapeshellarg($publicStorage));
     }
+    // Buat link relatif: dari public naik satu tingkat, lalu masuk ke storage/app/public
+    system('ln -s ../storage/app/public ' . escapeshellarg($publicStorage));
+
+    // Memberikan izin baca (read) dan eksekusi (untuk masuk folder) ke semua orang
+    system('chmod -R 755 ' . escapeshellarg(storage_path('app/public')));
+    
+    return "Jembatan relatif berhasil dibuat dan Izin akses folder dibuka. Cek foto sekarang!";
 });
 
 Route::get('/debug-storage', function () {
