@@ -4,6 +4,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 use App\Http\Controllers\FrontController;
 
 // Rute untuk halaman utama
@@ -66,12 +68,36 @@ Route::get('/debug-storage', function () {
     return response()->json($results);
 });
 
-Route::get('/trace-storage', function () {
-    $link = public_path('storage');
-    return response()->json([
-        'link_location' => $link,
-        'link_target' => is_link($link) ? readlink($link) : 'Not a link',
-        'target_exists' => file_exists(readlink($link)),
-        'actual_storage_path' => storage_path('app/public'),
-    ]);
+Route::get('/trace-storage-secure', function () {
+    try {
+        $link = public_path('storage');
+        $target = is_link($link) ? readlink($link) : 'Bukan Link';
+        
+        return response()->json([
+            'step_1_link_info' => [
+                'link_path' => $link,
+                'is_link' => is_link($link),
+                'link_exists' => file_exists($link),
+            ],
+            'step_2_target_info' => [
+                'target_path' => $target,
+                'target_exists' => ($target !== 'Bukan Link') ? file_exists($target) : false,
+                'actual_storage_app_public' => storage_path('app/public'),
+            ],
+            'step_3_permissions' => [
+                'is_public_writable' => is_writable(public_path()),
+                'is_storage_writable' => is_writable(storage_path('app/public')),
+            ],
+            'step_4_env' => [
+                'app_url' => config('app.url'),
+                'filesystem' => config('filesystems.default'),
+            ]
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ], 500);
+    }
 });
