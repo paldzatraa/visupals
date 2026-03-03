@@ -44,6 +44,10 @@ Route::get('/rebuild-bridge-final', function () {
     // 3. Cek apakah sekarang sudah jadi link
     $isLinkNow = is_link($publicPath);
 
+    // Memberikan izin baca-tulis secara rekursif pada folder storage
+    system('chmod -R 755 ' . escapeshellarg(storage_path('app/public')));
+    system('chmod -R 755 ' . escapeshellarg(public_path('storage')));
+
     return response()->json([
         'status' => $isLinkNow ? 'Success' : 'Failed',
         'message' => $isLinkNow ? 'Jembatan sudah terpasang!' : 'Gagal membangun jembatan.',
@@ -60,4 +64,14 @@ Route::get('/debug-storage', function () {
         'contents_of_storage' => file_exists(storage_path('app/public')) ? scandir(storage_path('app/public')) : 'folder not found',
     ];
     return response()->json($results);
+});
+
+Route::get('/trace-storage', function () {
+    $link = public_path('storage');
+    return response()->json([
+        'link_location' => $link,
+        'link_target' => is_link($link) ? readlink($link) : 'Not a link',
+        'target_exists' => file_exists(readlink($link)),
+        'actual_storage_path' => storage_path('app/public'),
+    ]);
 });
