@@ -29,16 +29,26 @@ Route::get('/create-admin-secure', function () {
     return "Admin berhasil dibuat. Silakan login ke /admin";
 });
 
-// Tambahkan di routes/web.php untuk dijalankan 1x lagi
-Route::get('/fix-storage', function () {
-    // Hapus link lama jika ada
-    if (is_link(public_path('storage'))) {
-        unlink(public_path('storage'));
+Route::get('/rebuild-bridge-final', function () {
+    $publicPath = public_path('storage');
+
+    // 1. Amputasi folder fisik storage
+    if (file_exists($publicPath)) {
+        // Jika folder, gunakan perintah sistem untuk menghapus rekursif
+        system('rm -rf ' . escapeshellarg($publicPath));
     }
-    
-    // Buat link baru
+
+    // 2. Bangun ulang jembatan symlink
     Artisan::call('storage:link');
-    return "Storage link has been reset and recreated!";
+
+    // 3. Cek apakah sekarang sudah jadi link
+    $isLinkNow = is_link($publicPath);
+
+    return response()->json([
+        'status' => $isLinkNow ? 'Success' : 'Failed',
+        'message' => $isLinkNow ? 'Jembatan sudah terpasang!' : 'Gagal membangun jembatan.',
+        'is_link' => $isLinkNow
+    ]);
 });
 
 Route::get('/debug-storage', function () {
