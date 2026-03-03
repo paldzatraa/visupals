@@ -1,0 +1,16 @@
+[phases.setup]
+  nixPkgs = ["...", "php84Packages.composer"] # Railway akan mendeteksi ini otomatis
+
+[phases.build]
+  dependsOn = ["setup"]
+  cmds = ["composer install --no-dev --optimize-autoloader", "npm install && npm run build"]
+
+# Fase ini dijalankan TEPAT sebelum aplikasi start
+[phases.postbuild]
+  cmds = [
+    "rm -rf public/storage", 
+    "php artisan storage:link",
+    "php artisan config:cache",
+    "php artisan route:cache",
+    "php artisan view:cache"
+  ]
