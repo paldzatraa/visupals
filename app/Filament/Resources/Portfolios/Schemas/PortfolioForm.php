@@ -79,10 +79,7 @@ class PortfolioForm
                             ->required(fn (Get $get) => $get('type') === 'photo')
                             ->label('Pilih Foto'),
                             
-                        /** * Masalah 2: Thumbnail Video Tidak Muncul.
-                         * Solusi: Gunakan nama kolom yang sama (file_path) agar dibaca oleh home.blade.php.
-                         */
-                        TextInput::make('file_path')
+                        TextInput::make('video_url')
                             ->url()
                             ->placeholder('https://www.youtube.com/watch?v=...')
                             ->visible(fn (Get $get) => $get('type') === 'video')
